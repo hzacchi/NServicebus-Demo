@@ -8,15 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D12EB2
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2D61DF1C-3DB6-4D05-B69A-1101BC076F80}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{16950AB9-933A-4C7F-8FE9-A155471DD59C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Endpoints", "Endpoints", "{4102DF2E-C9C5-43C0-A588-0EACE2AACDF4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routing", "Routing\Routing.csproj", "{8CE997F1-7139-4C69-8AEC-050BF6D09220}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{C982BBF2-5B22-4106-8E73-8CF41253C011}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Operations", "Operations\Operations.csproj", "{2A79FBE8-C0FD-4B36-ABC1-500022ECEC28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,11 +28,12 @@ Global
 		{C982BBF2-5B22-4106-8E73-8CF41253C011}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C982BBF2-5B22-4106-8E73-8CF41253C011}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C982BBF2-5B22-4106-8E73-8CF41253C011}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A79FBE8-C0FD-4B36-ABC1-500022ECEC28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A79FBE8-C0FD-4B36-ABC1-500022ECEC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A79FBE8-C0FD-4B36-ABC1-500022ECEC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A79FBE8-C0FD-4B36-ABC1-500022ECEC28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{8CE997F1-7139-4C69-8AEC-050BF6D09220} = {4102DF2E-C9C5-43C0-A588-0EACE2AACDF4}
 	EndGlobalSection
 EndGlobal
