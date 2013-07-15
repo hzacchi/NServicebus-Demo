@@ -55,7 +55,11 @@ _ReSharper*/
 
 #NuGet
 <<<<<<< HEAD
+<<<<<<< HEAD
 packages
+=======
+packages/*
+>>>>>>> f9b11ebb731d0167de12e8cab5b5555bbb8d1fad
 =======
 packages/*
 >>>>>>> f9b11ebb731d0167de12e8cab5b5555bbb8d1fad
