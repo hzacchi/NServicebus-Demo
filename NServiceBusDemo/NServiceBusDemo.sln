@@ -14,8 +14,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Endpoints", "Endpoints", "{4102DF2E-C9C5-43C0-A588-0EACE2AACDF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routing", "Routing\Routing.csproj", "{8CE997F1-7139-4C69-8AEC-050BF6D09220}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{C982BBF2-5B22-4106-8E73-8CF41253C011}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CE997F1-7139-4C69-8AEC-050BF6D09220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CE997F1-7139-4C69-8AEC-050BF6D09220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CE997F1-7139-4C69-8AEC-050BF6D09220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CE997F1-7139-4C69-8AEC-050BF6D09220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C982BBF2-5B22-4106-8E73-8CF41253C011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C982BBF2-5B22-4106-8E73-8CF41253C011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C982BBF2-5B22-4106-8E73-8CF41253C011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C982BBF2-5B22-4106-8E73-8CF41253C011}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8CE997F1-7139-4C69-8AEC-050BF6D09220} = {4102DF2E-C9C5-43C0-A588-0EACE2AACDF4}
 	EndGlobalSection
 EndGlobal
