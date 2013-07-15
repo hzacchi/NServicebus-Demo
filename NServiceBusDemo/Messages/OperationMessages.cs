@@ -9,28 +9,28 @@ namespace Messages
         public long ResourceId { get; set; }
     }
 
-    public class WipOperationStartedAtRouteStep : IEvent
+    public class OperationStartedAtRouteStep : IEvent
     {
         public long WipId { get; set; }
         public long RouteStepId { get; set; }
         public long ResourceId { get; set; }
     }
 
-    public class WipOperationPassedAtRouteStep : IEvent
+    public class OperationPassedAtRouteStep : IEvent
     {
         public long WipId { get; set; }
         public long RouteStepId { get; set; }
         public long ResourceId { get; set; }
     }
 
-    public class WipOperationFailedAtRouteStep : IEvent
+    public class OperationFailedAtRouteStep : IEvent
     {
         public long WipId { get; set; }
         public long RouteStepId { get; set; }
         public long ResourceId { get; set; }
     }
 
-    public class WipOperationAbortedAtRouteStep : IEvent
+    public class OperationAbortedAtRouteStep : IEvent
     {
         public long WipId { get; set; }
         public long RouteStepId { get; set; }

@@ -14,10 +14,10 @@ namespace Routing
                                IHandleMessages<WipEnqueuedAtRouteStep>, 
                                IHandleMessages<WipDequeuedAtRouteStep>,
 
-                               IHandleMessages<WipOperationStartedAtRouteStep>,
-                               IHandleMessages<WipOperationPassedAtRouteStep>,
-                               IHandleMessages<WipOperationFailedAtRouteStep>,
-                               IHandleMessages<WipOperationAbortedAtRouteStep>
+                               IHandleMessages<OperationStartedAtRouteStep>,
+                               IHandleMessages<OperationPassedAtRouteStep>,
+                               IHandleMessages<OperationFailedAtRouteStep>,
+                               IHandleMessages<OperationAbortedAtRouteStep>
     {
 
         public override void ConfigureHowToFindSaga()
@@ -25,10 +25,10 @@ namespace Routing
             ConfigureMapping<WipEnqueuedAtRouteStep>(data => data.WipId); 
             ConfigureMapping<WipDequeuedAtRouteStep>(data => data.WipId);
 
-            ConfigureMapping<WipOperationStartedAtRouteStep>(data => data.WipId);
-            ConfigureMapping<WipOperationPassedAtRouteStep>(data => data.WipId);
-            ConfigureMapping<WipOperationFailedAtRouteStep>(data => data.WipId);
-            ConfigureMapping<WipOperationAbortedAtRouteStep>(data => data.WipId);
+            ConfigureMapping<OperationStartedAtRouteStep>(data => data.WipId);
+            ConfigureMapping<OperationPassedAtRouteStep>(data => data.WipId);
+            ConfigureMapping<OperationFailedAtRouteStep>(data => data.WipId);
+            ConfigureMapping<OperationAbortedAtRouteStep>(data => data.WipId);
         } 
 
         public void Handle(WipReleasedToRoute message)
@@ -64,7 +64,7 @@ namespace Routing
             }
         }
 
-        public void Handle(WipOperationStartedAtRouteStep message)
+        public void Handle(OperationStartedAtRouteStep message)
         {
             //when an operation starts, wip should not be in queue anywhere
             foreach (var routeStepId in Data.InQueueRouteSteps)
@@ -75,7 +75,7 @@ namespace Routing
             Data.ChangeRouteStep(message.RouteStepId); //save resource?
         }
 
-        public void Handle(WipOperationPassedAtRouteStep message)
+        public void Handle(OperationPassedAtRouteStep message)
         {
             //TODO: handle previous step was null, look into not using null check. null object pattern?
             var nextSteps = RoutingTable.NextStespOnPass(message.RouteStepId,
@@ -86,7 +86,7 @@ namespace Routing
             }
         }
 
-        public void Handle(WipOperationFailedAtRouteStep message)
+        public void Handle(OperationFailedAtRouteStep message)
         {
             var nextSteps = RoutingTable.NextStepsOnFail(message.RouteStepId);
 
@@ -96,7 +96,7 @@ namespace Routing
             }
         }
 
-        public void Handle(WipOperationAbortedAtRouteStep message)
+        public void Handle(OperationAbortedAtRouteStep message)
         {
             var nextSteps = RoutingTable.NextStepsOnAbort(message.RouteStepId);
 

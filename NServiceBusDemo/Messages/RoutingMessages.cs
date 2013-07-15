@@ -12,6 +12,10 @@ namespace Messages
     {
         public long WipId { get; set; }
         public long RouteId { get; set; }
+
+        //Do these really belong here?
+        public long CustomerId { get; set; }
+        public long MaterialId { get; set; }
     }
 
     public class WipReleasedToRoute : IEvent
