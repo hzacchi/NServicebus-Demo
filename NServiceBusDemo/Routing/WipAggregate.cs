@@ -3,14 +3,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Common;
 using Messages;
+using NServiceBus;
 
 namespace Routing
-{
-    public class WipApplicationState
-    {
-        
-    }
-
+{ 
     public class WipAggregate
     {
         private readonly WipState _state;
@@ -27,7 +23,7 @@ namespace Routing
         }
 
 
-        void Apply(object e)
+        void Apply(IEvent e)
         {
             _state.Mutate(e);
             DomainEvents.Publish(e);
@@ -36,12 +32,12 @@ namespace Routing
 
     public class WipState
     {
-        public WipId WipId { get; private set; }
+        public WipId WipId { get; set; }
         public RouteStepId LastRouteStepId { get; set; }
-        public RouteStepId CurrentRouteStepId { get; private set; }
-        public ResourceId CurrentResourceId { get; private set; }
+        public RouteStepId CurrentRouteStepId { get; set; }
+        public ResourceId CurrentResourceId { get; set; }
 
-        public IList<RouteStepId> InQueueRouteSteps { get; private set; }
+        public IList<RouteStepId> InQueueRouteSteps { get; set; }
 
         public void When(WipReleasedToRoute @event)
         {
@@ -93,7 +89,7 @@ namespace Routing
             InQueueRouteSteps = new List<RouteStepId>();
         }
 
-        public void Mutate(object e)
+        public void Mutate(IEvent e)
         {
             RedirectToWhen.InvokeEventOptional(this, e);
         }

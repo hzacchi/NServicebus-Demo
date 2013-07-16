@@ -8,7 +8,7 @@ using NServiceBus.Saga;
 
 namespace Routing
 {
-    public class RoutingSaga : Saga<RouteSagaData>,
+    public class WipSaga : Saga<WipSagaData>,
                                IAmStartedByMessages<WipReleasedToRoute>,
 
                                IHandleMessages<WipEnqueuedAtRouteStep>,

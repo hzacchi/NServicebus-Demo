@@ -5,7 +5,7 @@ using NServiceBus.Saga;
 
 namespace Routing
 {
-    public class RouteSagaData : IContainSagaData
+    public class WipSagaData : IContainSagaData
     {
         // the following properties are mandatory
         public Guid Id { get; set; }
@@ -19,15 +19,20 @@ namespace Routing
         public RouteStepId PreviousRouteStepId { get; set; }
         public IList<RouteStepId> InQueueRouteSteps { get; set; }
 
-        public RouteSagaData()
-        {
-            InQueueRouteSteps = new List<RouteStepId>();
-        }
-
         public void ChangeRouteStep(RouteStepId routeStepId)
         {
             PreviousRouteStepId = CurrentRouteStepId;
             CurrentRouteStepId = routeStepId;
+        }
+
+        public WipSagaData()
+        {
+            WipId = new WipId();
+            RouteId = new RouteId();
+            CurrentRouteStepId = new RouteStepId();
+            PreviousRouteStepId = new RouteStepId();
+
+            InQueueRouteSteps = new List<RouteStepId>();
         }
     }
 }

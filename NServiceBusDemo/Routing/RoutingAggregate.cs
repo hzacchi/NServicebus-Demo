@@ -50,6 +50,7 @@ namespace Routing
 
     public class RoutingState
     {
+        public RouteId RouteId { get; set; }
         public IList<MaterialId> AssociatedMaterialIds { get; set; }
         public IDictionary<WipId, RouteStepId> InProcessWip { get; set; } 
         
