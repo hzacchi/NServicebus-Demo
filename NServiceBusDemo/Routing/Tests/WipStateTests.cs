@@ -9,6 +9,7 @@ using Messages;
 using Messages.V1.Operations;
 using Messages.V1.Routing;
 using NUnit.Framework;
+using Newtonsoft.Json;
 
 namespace Routing.Tests
 {
@@ -44,6 +45,19 @@ namespace Routing.Tests
 
             //THEN  
             Assert.AreEqual(0, state.InQueueRouteSteps.Count);
+        }
+
+        [Test]
+        public void serialize()
+        {
+            var message = new WipEnqueuedAtRouteStep {WipId = new WipId(11), RouteStepId = new RouteStepId(12)};
+            var json = JsonConvert.SerializeObject(message);
+
+            Console.WriteLine(json);
+            var o = JsonConvert.DeserializeObject<WipEnqueuedAtRouteStep>(json);
+
+            Assert.AreEqual(message.WipId.Id, o.WipId.Id);
+            Assert.AreEqual(message.RouteStepId.Id, o.RouteStepId.Id);
         }
     }
 }
