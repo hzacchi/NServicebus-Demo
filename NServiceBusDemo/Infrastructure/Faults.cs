@@ -1,6 +1,6 @@
 ﻿using NServiceBus;
 
-namespace Common
+namespace Infrastructure
 {
     public class Faults
     {

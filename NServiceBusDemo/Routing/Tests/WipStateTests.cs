@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
+using Domain.Identities;
 using Messages;
+using Messages.V1.Operations;
+using Messages.V1.Routing;
 using NUnit.Framework;
 
 namespace Routing.Tests

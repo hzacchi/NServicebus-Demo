@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Common;
+﻿ 
+using Domain.Identities;
 using NServiceBus;
 
-namespace Messages
+namespace Messages.V1.Assemble
 {
     public class AssemblePart : ICommand
     {

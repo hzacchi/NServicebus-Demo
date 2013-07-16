@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3291683A-A3DF-4F6E-9B5E-E2069822F2F2}</ProjectGuid>
+    <ProjectGuid>{8FEA9580-130B-4B5E-900B-F086A7D2FD0A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Assemble</RootNamespace>
-    <AssemblyName>Assemble</AssemblyName>
+    <RootNamespace>Domain</RootNamespace>
+    <AssemblyName>Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NServiceBus">
-      <HintPath>..\Messages\bin\Debug\NServiceBus.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,23 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssembleSaga.cs" />
-    <Compile Include="AssembleSagaData.cs" />
+    <Compile Include="Identities\CustomerId.cs" />
+    <Compile Include="Identities\MaterialId.cs" />
+    <Compile Include="IIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj">
-      <Project>{8FEA9580-130B-4B5E-900B-F086A7D2FD0A}</Project>
-      <Name>Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
-      <Project>{6B9DB724-C5BD-4CD8-937A-09D0A88CE3B8}</Project>
-      <Name>Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Messages.V1\Messages.V1.csproj">
-      <Project>{D970B8FB-0767-40C4-BAFC-ECD0D8255BA5}</Project>
-      <Name>Messages.V1</Name>
-    </ProjectReference>
+    <Compile Include="Identities\ResourceId.cs" />
+    <Compile Include="Identities\RouteId.cs" />
+    <Compile Include="Identities\RouteStepId.cs" />
+    <Compile Include="Identities\WipId.cs" />
+    <Compile Include="AbstractIdentity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

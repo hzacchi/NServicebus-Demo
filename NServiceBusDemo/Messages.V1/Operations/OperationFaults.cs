@@ -1,6 +1,7 @@
-﻿using Common;
+﻿ 
+using Domain.Identities;
 
-namespace Messages
+namespace Messages.V1.Operations
 {
     public class OperationFailedToStartBecauseMaterialIsNotValidForRoute
     {

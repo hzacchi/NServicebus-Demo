@@ -1,7 +1,8 @@
-﻿using Common;
+﻿ 
+using Domain.Identities;
 using NServiceBus;
 
-namespace Messages
+namespace Messages.V1.Operations
 {
     public class StartWipAtOperation : ICommand
     {

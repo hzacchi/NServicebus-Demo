@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Domain.Identities;
 using NServiceBus.Saga;
 
 namespace Routing

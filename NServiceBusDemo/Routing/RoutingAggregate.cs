@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using Common;
-using Messages;
+using Domain.Identities;
+using Infrastructure;
+using Messages.V1.Operations;
 
 namespace Routing
 {

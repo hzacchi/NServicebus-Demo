@@ -69,13 +69,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{61774489-C934-4B15-B17E-2E2F29245D6B}</Project>
-      <Name>Common</Name>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{8FEA9580-130B-4B5E-900B-F086A7D2FD0A}</Project>
+      <Name>Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Messages\Messages.csproj">
-      <Project>{C982BBF2-5B22-4106-8E73-8CF41253C011}</Project>
-      <Name>Messages</Name>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{6B9DB724-C5BD-4CD8-937A-09D0A88CE3B8}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Messages.V1\Messages.V1.csproj">
+      <Project>{D970B8FB-0767-40C4-BAFC-ECD0D8255BA5}</Project>
+      <Name>Messages.V1</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

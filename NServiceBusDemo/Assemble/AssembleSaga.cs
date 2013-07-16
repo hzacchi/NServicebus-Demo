@@ -1,5 +1,6 @@
 ﻿using Common;
-using Messages;
+using Messages.V1.Assemble;
+using Messages.V1.Operations;
 using NServiceBus;
 using NServiceBus.Saga;
 
@@ -9,11 +10,16 @@ namespace Assemble
                                 IAmStartedByMessages<OperationStartedAtRouteStep>,
                                 IHandleMessages<PartAssembled>,
                                 IHandleMessages<PartDisassembled>,
-                                IHandleMessages<CompleteAssemble>
-    { 
+                                IHandleMessages<CompleteAssemble>,
+
+                                IHandleMessages<OperationAbortedAtRouteStep>,
+                                IHandleMessages<OperationFailedAtRouteStep>,
+                                IHandleMessages<OperationPassedAtRouteStep>
+    {
 
         public void Handle(OperationStartedAtRouteStep message)
-        { 
+        {
+            //loop count?
         }
 
         public void Handle(PartAssembled message)
@@ -65,7 +71,7 @@ namespace Assemble
             if (Data.MaterialsToAssemble.Count > 0)
             {
                 switch (Data.ResultWhenCompletingWithMaterialRemainingToBeAssembled)
-                { 
+                {
                     case InProcessOperationResult.Fail:
                         Bus.Publish(new OperationFailedAtRouteStep
                             {
@@ -76,14 +82,14 @@ namespace Assemble
                             });
                         return;
                     case InProcessOperationResult.Abort:
-                        Bus.Publish(new OperationAbortedAtRouteStep 
+                        Bus.Publish(new OperationAbortedAtRouteStep
                             {
                                 WipId = message.WipId,
                                 MaterialId = message.MaterialId,
                                 RouteStepId = message.RouteStepId,
                                 ResourceId = message.ResourceId
                             });
-                        return; 
+                        return;
                         //drop through to pass
                 }
             }
@@ -95,6 +101,23 @@ namespace Assemble
                     RouteStepId = message.RouteStepId,
                     ResourceId = message.ResourceId
                 });
+        }
+
+        public void Handle(OperationAbortedAtRouteStep message)
+        {
+            //Does this really complete?  Maybe need to keep track of loop count
+            MarkAsComplete();
+        }
+
+        public void Handle(OperationFailedAtRouteStep message)
+        {
+            //Does this really complete?  Maybe need to keep track of loop count.  Might affect first pass yield.
+            MarkAsComplete();
+        }
+
+        public void Handle(OperationPassedAtRouteStep message)
+        { 
+            MarkAsComplete();
         }
     }
 }
