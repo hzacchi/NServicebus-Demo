@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssembleMessages.cs" />
     <Compile Include="OperationFaults.cs" />
     <Compile Include="OperationMessages.cs" />
     <Compile Include="RoutingMessages.cs" />

@@ -53,10 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RouteSaga.cs" />
+    <Compile Include="WipSaga.cs" />
     <Compile Include="EndpointConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RouteSagaData.cs" />
+    <Compile Include="WipSagaData.cs" />
     <Compile Include="RoutingAggregate.cs" />
     <Compile Include="Tests\WipStateTests.cs" />
     <Compile Include="WipAggregate.cs" />

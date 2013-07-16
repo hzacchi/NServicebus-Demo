@@ -51,9 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainEvents.cs" />
-    <Compile Include="EndpointConfig.cs" />
     <Compile Include="Faults.cs" />
     <Compile Include="Identities.cs" />
+    <Compile Include="InProcessOperationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedirectToWhen.cs" />
   </ItemGroup>

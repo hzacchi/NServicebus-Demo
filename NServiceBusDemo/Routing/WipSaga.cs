@@ -22,13 +22,13 @@ namespace Routing
 
         public override void ConfigureHowToFindSaga()
         {
-            ConfigureMapping<WipEnqueuedAtRouteStep>(data => data.WipId);
-            ConfigureMapping<WipDequeuedAtRouteStep>(data => data.WipId);
+            ConfigureMapping<WipEnqueuedAtRouteStep>(data => data.WipId).ToSaga(data => data.WipId);
+            ConfigureMapping<WipDequeuedAtRouteStep>(data => data.WipId).ToSaga(data => data.WipId);
 
-            ConfigureMapping<OperationStartedAtRouteStep>(data => data.WipId);
-            ConfigureMapping<OperationPassedAtRouteStep>(data => data.WipId);
-            ConfigureMapping<OperationFailedAtRouteStep>(data => data.WipId);
-            ConfigureMapping<OperationAbortedAtRouteStep>(data => data.WipId);
+            ConfigureMapping<OperationStartedAtRouteStep>(data => data.WipId).ToSaga(data => data.WipId);
+            ConfigureMapping<OperationPassedAtRouteStep>(data => data.WipId).ToSaga(data => data.WipId);
+            ConfigureMapping<OperationFailedAtRouteStep>(data => data.WipId).ToSaga(data => data.WipId);
+            ConfigureMapping<OperationAbortedAtRouteStep>(data => data.WipId).ToSaga(data => data.WipId);
         }
 
         public void Handle(WipReleasedToRoute message)
