@@ -70,6 +70,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{61774489-C934-4B15-B17E-2E2F29245D6B}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Messages\Messages.csproj">
       <Project>{C982BBF2-5B22-4106-8E73-8CF41253C011}</Project>
       <Name>Messages</Name>

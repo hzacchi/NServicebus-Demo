@@ -1,56 +1,53 @@
 ﻿using System.Collections.Generic;
+using Common;
 
 namespace Routing
 {
     public class RoutingTable
     {
-        private const long Assemble1 = 1;
-        private const long Assemble2_A = 2;
-        private const long Assemble2_B = 3;
-        private const long Assemble3 = 4;
-        private const long InspectionAndRework = 5;
-        private const long Supermarket = 6;
-        private const long Scrap = 7;
+        private static RouteStepId Assemble1 = new RouteStepId(1);
+        private static RouteStepId Assemble2_A = new RouteStepId(2);
+        private static RouteStepId Assemble2_B = new RouteStepId(3);
+        private static RouteStepId Assemble3 = new RouteStepId(4);
+        private static RouteStepId InspectionAndRework = new RouteStepId(5);
+        private static RouteStepId Supermarket = new RouteStepId(6);
+        private static RouteStepId Scrap = new RouteStepId(7);
 
-        public static long FirstStep()
+        public static RouteStepId FirstStep()
         {
             return Assemble1;
         }
 
-        public static long[] NextStespOnPass(long routeStepId, long previousStep)
+        public static RouteStepId[] NextStespOnPass(RouteStepId routeStepId, RouteStepId previousStep)
         {
-            switch (routeStepId)
+            switch (routeStepId.Id)
             {
                 case 1:
-                    return new long[] {Assemble2_A, Assemble2_B};
+                    return new RouteStepId[] { Assemble2_A, Assemble2_B };
                 case 2:
-                    return new long[] {Assemble3};
+                    return new RouteStepId[] { Assemble3 };
                 case 3:
-                    return new long[] {Assemble3};
+                    return new RouteStepId[] { Assemble3 };
                 case 4:
-                    return new long[] {Supermarket};
+                    return new RouteStepId[] { Supermarket };
                 case 5:
-                    return new long[] {previousStep};
+                    return new RouteStepId[] { previousStep };
                 default:
-                    return new long[] {}; //terminating step
+                    return new RouteStepId[] { }; //terminating step
             }
         }
 
-        public static long[] NextStepsOnFail(long routeStepId)
+        public static RouteStepId[] NextStepsOnFail(RouteStepId routeStepId)
         {
-            switch (routeStepId)
-            {
-                case InspectionAndRework:
-                    return new long[] {Scrap};
-                default:
-                    return new long[] {InspectionAndRework};
-            }
+            return routeStepId == InspectionAndRework
+                       ? new RouteStepId[] {Scrap}
+                       : new RouteStepId[] {InspectionAndRework};
         }
 
-        public static long[] NextStepsOnAbort(long routeStepId)
+        public static RouteStepId[] NextStepsOnAbort(RouteStepId routeStepId)
         {
             //reenqueue at same step
-            return new long[] {routeStepId};
+            return new RouteStepId[] { routeStepId };
         }
     }
 }

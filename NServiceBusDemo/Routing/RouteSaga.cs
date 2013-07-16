@@ -7,11 +7,11 @@ using NServiceBus;
 using NServiceBus.Saga;
 
 namespace Routing
-{ 
-    public class RoutingSaga : Saga<RouteSagaData>, 
+{
+    public class RoutingSaga : Saga<RouteSagaData>,
                                IAmStartedByMessages<WipReleasedToRoute>,
-         
-                               IHandleMessages<WipEnqueuedAtRouteStep>, 
+
+                               IHandleMessages<WipEnqueuedAtRouteStep>,
                                IHandleMessages<WipDequeuedAtRouteStep>,
 
                                IHandleMessages<OperationStartedAtRouteStep>,
@@ -21,42 +21,40 @@ namespace Routing
     {
 
         public override void ConfigureHowToFindSaga()
-        {  
-            ConfigureMapping<WipEnqueuedAtRouteStep>(data => data.WipId); 
+        {
+            ConfigureMapping<WipEnqueuedAtRouteStep>(data => data.WipId);
             ConfigureMapping<WipDequeuedAtRouteStep>(data => data.WipId);
 
             ConfigureMapping<OperationStartedAtRouteStep>(data => data.WipId);
             ConfigureMapping<OperationPassedAtRouteStep>(data => data.WipId);
             ConfigureMapping<OperationFailedAtRouteStep>(data => data.WipId);
             ConfigureMapping<OperationAbortedAtRouteStep>(data => data.WipId);
-        } 
+        }
 
         public void Handle(WipReleasedToRoute message)
         {
             Data.RouteId = message.RouteId;
             //determine where to enqueue
             Bus.Send(new EnqueueWipAtRouteStep {WipId = message.WipId, RouteStepId = RoutingTable.FirstStep()});
-        } 
+        }
 
         public void Handle(WipEnqueuedAtRouteStep message)
         {
             if (!Data.InQueueRouteSteps.Contains(message.RouteStepId))
             {
-                Data.InQueueRouteSteps.Add(message.RouteStepId);
-                //Bus.Publish(new WipEnqueuedAtRouteStep { WipId = message.WipId, RouteStepId = message.RouteStepId });
+                Data.InQueueRouteSteps.Add(message.RouteStepId); 
             }
             else
             {
                 //Handle the case where wip was not enqueued at the requested route step so not able to dequeue it
             }
-        } 
+        }
 
         public void Handle(WipDequeuedAtRouteStep message)
         {
             if (Data.InQueueRouteSteps.Contains(message.RouteStepId))
             {
-                Data.InQueueRouteSteps.Remove(message.RouteStepId);
-                //Bus.Publish(new WipDequeuedAtRouteStep { WipId = message.WipId, RouteStepId = message.RouteStepId });
+                Data.InQueueRouteSteps.Remove(message.RouteStepId); 
             }
             else
             {
@@ -77,9 +75,8 @@ namespace Routing
 
         public void Handle(OperationPassedAtRouteStep message)
         {
-            //TODO: handle previous step was null, look into not using null check. null object pattern?
-            var nextSteps = RoutingTable.NextStespOnPass(message.RouteStepId,
-                                                         Data.PreviousRouteStepId.GetValueOrDefault());
+            var nextSteps = RoutingTable.NextStespOnPass(message.RouteStepId, Data.PreviousRouteStepId);
+
             foreach (var step in nextSteps)
             {
                 Bus.Send(new EnqueueWipAtRouteStep {WipId = message.WipId, RouteStepId = step});

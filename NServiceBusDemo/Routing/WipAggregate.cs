@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 using Messages;
 
 namespace Routing
 {
+    public class WipApplicationState
+    {
+        
+    }
 
     public class WipAggregate
     {
@@ -15,25 +20,32 @@ namespace Routing
             _state = state;
         }
 
-        //void Apply(IEvent<RegistrationId> e)
-        //{
-        //    _state.Mutate(e);
-        //    Changes.Add(e);
-        //}
+        public void Handle(EnqueueWipAtRouteStep command)
+        {
+            //Business logic
+            Apply(new WipEnqueuedAtRouteStep {WipId = command.WipId, RouteStepId = command.RouteStepId});
+        }
+
+
+        void Apply(object e)
+        {
+            _state.Mutate(e);
+            DomainEvents.Publish(e);
+        }
     }
 
     public class WipState
     {
-        public long Id { get; private set; }
-        public long? LastRouteStepId { get; set; }
-        public long? CurrentRouteStepId { get; private set; }
-        public long? CurrentResourceId { get; private set; }
+        public WipId WipId { get; private set; }
+        public RouteStepId LastRouteStepId { get; set; }
+        public RouteStepId CurrentRouteStepId { get; private set; }
+        public ResourceId CurrentResourceId { get; private set; }
 
-        public IList<long> InQueueRouteSteps { get; private set; }
+        public IList<RouteStepId> InQueueRouteSteps { get; private set; }
 
         public void When(WipReleasedToRoute @event)
         {
-            Id = @event.WipId;
+            WipId = @event.WipId;
         }
 
         public void When(WipEnqueuedAtRouteStep @event)
@@ -41,8 +53,8 @@ namespace Routing
             if (!InQueueRouteSteps.Contains(@event.RouteStepId))
             {
                 InQueueRouteSteps.Add(@event.RouteStepId);
-                CurrentRouteStepId = null;
-                CurrentResourceId = null;
+                CurrentRouteStepId = new RouteStepId();
+                CurrentResourceId = new ResourceId();
             }
         }
 
@@ -78,7 +90,7 @@ namespace Routing
 
         public WipState()
         {
-            InQueueRouteSteps = new List<long>();
+            InQueueRouteSteps = new List<RouteStepId>();
         }
 
         public void Mutate(object e)

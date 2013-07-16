@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common;
 using NServiceBus.Saga;
 
 namespace Routing
@@ -12,18 +13,18 @@ namespace Routing
         public string OriginalMessageId { get; set; }
 
         // all other properties you want persisted
-        public long WipId { get; set; }
-        public long RouteId { get; set; }
-        public long? CurrentRouteStepId { get; set; }
-        public long? PreviousRouteStepId { get; set; }
-        public IList<long> InQueueRouteSteps { get; set; }
+        public WipId WipId { get; set; }
+        public RouteId RouteId { get; set; }
+        public RouteStepId CurrentRouteStepId { get; set; }
+        public RouteStepId PreviousRouteStepId { get; set; }
+        public IList<RouteStepId> InQueueRouteSteps { get; set; }
 
         public RouteSagaData()
         {
-            InQueueRouteSteps = new List<long>();
+            InQueueRouteSteps = new List<RouteStepId>();
         }
 
-        public void ChangeRouteStep(long routeStepId)
+        public void ChangeRouteStep(RouteStepId routeStepId)
         {
             PreviousRouteStepId = CurrentRouteStepId;
             CurrentRouteStepId = routeStepId;
