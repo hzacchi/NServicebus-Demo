@@ -1,4 +1,4 @@
-Jabil-NServicebus-Demo
+NServicebus-Demo
 ======================
 
 Proof of concept application
