@@ -9,7 +9,7 @@ namespace Domain
     /// <typeparam name="TKey">The type of the key.</typeparam>
     public abstract class AbstractIdentity<TKey> : IIdentity
     {
-        public abstract TKey Id { get; protected set; }
+        public abstract TKey Id { get; set; }
 
         public string GetId()
         {

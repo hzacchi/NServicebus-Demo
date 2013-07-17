@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AssembleSaga.cs" />
     <Compile Include="AssembleSagaData.cs" />
+    <Compile Include="Domain\Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

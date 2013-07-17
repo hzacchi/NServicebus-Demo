@@ -14,7 +14,7 @@
             return TagValue;
         }
 
-        public override long Id { get; protected set; }
+        public override long Id { get; set; }
 
         public WipId() { }
     }

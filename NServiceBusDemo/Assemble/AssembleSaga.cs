@@ -1,4 +1,6 @@
-﻿using Common;
+﻿using System.Collections.Generic;
+using Common;
+using Domain.Identities;
 using Messages.V1.Assemble;
 using Messages.V1.Operations;
 using NServiceBus;
@@ -6,6 +8,28 @@ using NServiceBus.Saga;
 
 namespace Assemble
 {
+    //I don't think assemble is actually a saga... the only part that might be is to keep track of what has been assembled
+    //and when nothing is left to be assembled, you auto complete, but that can probably just be done in the aggregate.
+    public class AssembleAggregate
+    {
+        private AssembleState _state;
+
+        public AssembleAggregate(AssembleState state)
+        {
+            _state = state;
+        }
+
+
+    }
+
+    public class AssembleState
+    { 
+        public WipId WipId { get; set; }
+        public MaterialId MaterialId { get; set; }
+        public IList<MaterialId> MaterialsToAssemble { get; set; }
+        public IList<MaterialId> AssembledMaterials { get; set; }
+    }
+
     public class AssembleSaga : Saga<AssembleSagaData>,
                                 IAmStartedByMessages<OperationStartedAtRouteStep>,
                                 IHandleMessages<PartAssembled>,
