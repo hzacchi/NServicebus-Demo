@@ -16,6 +16,21 @@ namespace Assemble
         public string Originator { get; set; }
         public string OriginalMessageId { get; set; }
 
+        [Unique]
+        public string UniqueId
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_uniqueId))
+                {
+                    return string.Format("{0}.{1}", WipId.Id, RouteStepId.Id);
+                }
+                return _uniqueId;
+            }
+            set { _uniqueId = value; }
+        }
+        private string _uniqueId;
+
         // all other properties you want persisted
         public RouteStepId RouteStepId { get; set; }
         public WipId WipId { get; set; }
