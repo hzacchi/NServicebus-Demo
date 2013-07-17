@@ -39,8 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Identities\BomId.cs" />
     <Compile Include="Identities\CustomerId.cs" />
+    <Compile Include="Identities\CustomerOrderId.cs" />
     <Compile Include="Identities\MaterialId.cs" />
+    <Compile Include="Identities\ShopFloorOrderId.cs" />
     <Compile Include="IIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Identities\ResourceId.cs" />

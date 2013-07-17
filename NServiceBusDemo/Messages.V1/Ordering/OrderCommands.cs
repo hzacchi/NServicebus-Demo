@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ordering
-{
-    public class Class1
-    {
-    }
+namespace Messages.V1.Ordering
+{ 
 }
