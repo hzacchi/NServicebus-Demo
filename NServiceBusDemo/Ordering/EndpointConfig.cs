@@ -1,6 +1,8 @@
 using NServiceBus;
 
-namespace OrderPublisher
+namespace Ordering
 {
-    class EndpointConfig : IConfigureThisEndpoint, AsA_Publisher { }
+    class EndpointConfig : IConfigureThisEndpoint, AsA_Server { }
+
+     
 }
