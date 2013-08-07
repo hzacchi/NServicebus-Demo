@@ -1,0 +1,29 @@
+﻿@model IList<Domain.WipItem>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<h2>Wip at Assemble</h2>
+<div>
+    <ul>
+    @foreach (var wip in Model)
+    {
+        <li>
+            @wip.Id (@wip.Station) 
+
+            @using (Html.BeginForm("Pass", "Assemble", wip))
+            {
+                <input type="submit" value="Pass"/>    
+            }
+
+            @using (Html.BeginForm("Fail", "Assemble", wip))
+            {
+                <input type="submit" value="Fail"/>    
+            }
+        </li>   
+    }
+    </ul>
+</div>
