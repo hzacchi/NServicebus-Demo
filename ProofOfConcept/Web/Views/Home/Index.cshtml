@@ -10,17 +10,17 @@
     #scrap { float: right;width: 47.5%}
 
     ul {list-style-type: none}
-    ul li { float: left;width: 30%;height: 25px;background-color: gray;margin: 0px 2px 2px 0px;color: white;text-align: center;padding: 2px 0px 0px 2px}
-    ul li.pending {background-color: orange}
+    ul li { float: left;height: 25px;background-color: gray;margin: 0px 2px 2px 0px;color: white;text-align: center;padding: 2px 2px 0px 2px}
+    ul li.pending {opacity:0.25;}
     ul li.passed {background-color: green}
     ul li.failed {background-color: red}
-    ul li.assembling {border: dashed 1px blue}
+    ul li.assembling { border: dashed 1px blue;background-color: white; color: blue}
 </style>
 
 <fieldset id="wip" class="section">
     <legend>Wip Release</legend>
     <section>
-        Next Wip Released In: <span id="timer"></span> seconds
+        <input type="checkbox" id="enableWipRelease" checked="checked" /> Next Wip Released In: <span id="timer"></span> seconds
     </section>
     <ul></ul>
     <div class="clear"></div>
@@ -58,48 +58,51 @@
 
 
     router.client.wipReleased = function (data) {
-        console.log('wipReleased', data);
-        var li = $("ul li#" + data.WipId);
-        li.removeClass("pending");
+        //console.log('wipReleased', data);
+        moveTo("#assemble", data.WipId);
+        $("ul li#" + data.WipId).addClass("pending");
     };
 
     router.client.assembleStarted = function (data) {
         console.log('assembleStarted', data);
-        $("ul li#" + id).addClass("assembling");
+        $("ul li#" + data.WipId).addClass("assembling");
     };
 
     router.client.assemblePassed = function (data) {
-        console.log('assemblePassed', data);
-        var li = $("ul li#" + data.WipId);
-        li.addClass('passed');
-    };
-
-    router.client.assembleFailed = function (data) {
-        console.log('assembleFailed', data);
-        var li = $("ul li#" + data.WipId);
-        li.addClass('failed');
-    };
-
-    router.client.wipMovedToAssemble = function (data) {
-        console.log('wipMovedToAssemble', data);
-        moveTo("#assemble", data.WipId);
-
-        var $li = $("ul li#" + data.WipId);
-
-        //start assemble
-        $.post('/api/assemble/' + data.WipId, {}, function () {
-            $li.addClass("assembling");
-        });
-    }; 
-
-    router.client.wipMovedToPackout = function (data) {
-        console.log('wipMovedToPackout', data);
+        //console.log('assemblePassed', data);
+        $("ul li#" + data.WipId).addClass('passed').addClass('pending').removeClass("assembling");
         moveTo("#packout", data.WipId);
     };
 
-    router.client.wipMovedToScrap = function (data) {
-        console.log('wipMovedToScrap', data);
+    router.client.assembleFailed = function (data) {
+        //console.log('assembleFailed', data);
+        $("ul li#" + data.WipId).addClass('failed').addClass('pending').removeClass("assembling");
         moveTo("#scrap", data.WipId);
+    };
+
+    router.client.wipMovedToAssemble = function (data) {
+        //console.log('wipMovedToAssemble', data);
+        $("ul li#" + data.WipId).removeClass("pending");
+    }; 
+
+    router.client.wipMovedToPackout = function (data) {
+        //console.log('wipMovedToPackout', data);
+        $("ul li#" + data.WipId).removeClass("pending");
+    };
+
+    router.client.wipMovedToScrap = function (data) {
+        //console.log('wipMovedToScrap', data);
+        $("ul li#" + data.WipId).removeClass("pending");
+    };
+
+    router.client.wipPacked = function (data) {
+        //console.log('wipPacked', data);
+        remove("#packout", data.WipId);
+    };
+
+    router.client.wipScrapped = function (data) {
+        //console.log('wipScrapped', data);
+        remove("#scrap", data.WipId);
     };
 
     $.connection.hub.start()
@@ -115,21 +118,31 @@
      
     var wipReleaseTimer = 1;
     function releaseWipTimer() {
-        $('#timer').html(wipReleaseTimer);
+        var enabled = $("#enableWipRelease").is(":checked");
+         
+        if (enabled) {
+            $('#timer').html(wipReleaseTimer);
+        }
         
         if (wipReleaseTimer == 0) {
-            releaseWip();
-            wipReleaseTimer = 5;
+            if (enabled) {
+                releaseWip();
+            }
+            if (enabled) {
+                wipReleaseTimer = 1;
+            }
         } else {
-            wipReleaseTimer--;
+            if (enabled) {
+                wipReleaseTimer--;
+            }
         }
         
         setTimeout('releaseWipTimer()', 1000);
     }
 
-    function releaseWip() {
-        $.post('/api/wip', {}, function(id) {
-            var li = $('<li class="pending">' + id + "</li>");
+    function releaseWip() { 
+        $.post('/api/wip', {}, function (id) { 
+            var li = $('<li>' + id + "</li>");
             li.attr("id", id);
             $('#wip ul').append(li);
         });
@@ -139,5 +152,10 @@
         var li = $("ul li#" + id);
         li.remove();
         $('ul', container).append(li);
-    } 
+    }
+
+    function remove(container, id) {
+        var li = $("ul li#" + id);
+        li.fadeOut(); 
+    }
 </script>

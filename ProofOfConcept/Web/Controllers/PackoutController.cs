@@ -15,7 +15,7 @@ namespace Web.Controllers
 
         public ActionResult Index()
         {
-            var wip = Repository.GetAll<WipItem>().Where(o => o.Station == "Packout").ToList();
+            var wip = Repository.GetAll().Where(o => o.Station == "Packout").ToList();
             return View(wip);
         }
 

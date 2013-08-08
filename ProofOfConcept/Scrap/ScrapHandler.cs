@@ -36,7 +36,7 @@ namespace Scrap
 
         public void Handle(WipMovedToScrap message)
         {
-            var wip = Repository.Get<WipItem>(message.WipId);
+            var wip = Repository.Get(message.WipId);
             wip.Station = "Scrap";
             Repository.Save(message.WipId, wip);
         }

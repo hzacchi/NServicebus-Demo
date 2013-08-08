@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Contracts.Assemble.Events;
+using Contracts.Packout.Events;
 using Contracts.Routing.Events;
+using Contracts.Scrap.Events;
 using Contracts.Wip.Events;
 using Microsoft.AspNet.SignalR;
 using NServiceBus;
@@ -12,11 +14,14 @@ namespace Web.Handlers
 {
     public class RoutingHandler :
         IHandleMessages<WipReleased>,
+        IHandleMessages<AssembleStarted>,
         IHandleMessages<AssemblePassed>,
         IHandleMessages<AssembleFailed>,
         IHandleMessages<WipMovedToAssemble>,
         IHandleMessages<WipMovedToPackout>,
-        IHandleMessages<WipMovedToScrap>
+        IHandleMessages<WipMovedToScrap>,
+        IHandleMessages<WipPacked>,
+        IHandleMessages<WipScrapped>
     {
         public void Handle(WipReleased message)
         {
@@ -86,6 +91,26 @@ namespace Web.Handlers
                 {
                     message.WipId
                 });
+        }
+
+        public void Handle(WipPacked message)
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<RoutingHub>();
+
+            context.Clients.All.wipPacked(new
+            {
+                message.WipId
+            });
+        }
+
+        public void Handle(WipScrapped message)
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<RoutingHub>();
+
+            context.Clients.All.wipScrapped(new
+            {
+                message.WipId
+            });
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Assemble
         public void Handle(WipMovedToAssemble message)
         {
             Console.WriteLine(message.ToString());
-            var wip = Repository.Get<WipItem>(message.WipId);
+            var wip = Repository.Get(message.WipId);
             wip.Station = "Assemble";
             Repository.Save(message.WipId, wip);
         }

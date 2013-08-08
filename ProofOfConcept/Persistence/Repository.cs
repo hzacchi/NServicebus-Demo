@@ -1,86 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Dapper;
+using Domain;
+using Newtonsoft.Json; 
 
 namespace Persistence
 {
     public class Repository
     {
-        private static string rootPath = @"C:\demo\";  
-
-        private static string GetDbPath<T>()
+        private static string _connectionString = "Server=(local);Database=NsbDemo;Min Pool Size=5;Pooling=True;Trusted_Connection=True"; 
+         
+        private static IDbConnection GetDb()
         {
-            return Path.Combine(rootPath, string.Format("{0}.json", typeof (T).Name));
-        }
+            var connection = new SqlConnection(_connectionString);
+            connection.Open();
 
-        private static IDictionary<string, T> GetDb<T>()
-            where T : class
-        {
-            var path = GetDbPath<T>();
+            var exists =
+                connection.Query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'WipItems'").Any();
 
-            if (!File.Exists(path))
+            if (!exists)
             {
-                return new Dictionary<string, T>();
+                connection.Execute(
+                    "CREATE TABLE WipItems(Id uniqueidentifier PRIMARY KEY, IsComplete bit NOT NULL DEFAULT(0), Station nvarchar(50));");
             }
 
-            var db = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<IDictionary<string, T>>(db);
+            return connection;
         }
 
-        private static void UpdateDb<T>(IDictionary<string, T> database)
-            where T : class
+        public static void Save(Guid id, WipItem obj) 
         {
-            var path = GetDbPath<T>();
-            var db = JsonConvert.SerializeObject(database);
-            File.WriteAllText(path, db);
-        }
-
-        public static void Save<T>(object id, T obj)
-            where T : class
-        {
-            var db = GetDb<T>();
-
-            if (db.ContainsKey(id.ToString()))
+            using (var connection = GetDb())
             {
-                db[id.ToString()] = obj;
-            }
-            else
+                var exists = connection.Query("SELECT Id FROM WipItems WHERE Id = @id", new {id}).Any();
+                if (exists)
+                {
+                    connection.Execute("UPDATE WipItems SET IsComplete = @IsComplete, Station = @Station", obj);
+                }
+                else
+                {
+                    connection.Execute(
+                        "INSERT INTO WipItems(Id, IsComplete, Station) VALUES(@Id, @IsComplete, @Station)", obj);
+                }
+            }  
+        }
+
+        public static WipItem Get(Guid id) 
+        {
+            using (var connection = GetDb())
             {
-                db.Add(id.ToString(), obj);
-            }
-
-            UpdateDb(db);
+                return connection.Query<WipItem>("SELECT Id FROM WipItems WHERE Id = @id", new { id }).SingleOrDefault(); 
+            }  
         }
 
-        public static T Get<T>(object id)
-            where T : class
+        public static IEnumerable<WipItem> GetAll() 
         {
-            var db = GetDb<T>();
-
-            return db.ContainsKey(id.ToString()) ? db[id.ToString()] : null;
-        }
-
-        public static IEnumerable<T> GetAll<T>()
-            where T : class
-        {
-            var db = GetDb<T>();
-            return db.Values;
-        }
-
-        public static void Delete<T>(object id)
-            where T : class
-        {
-            var db = GetDb<T>();
-
-            if (db.ContainsKey(id.ToString()))
+            using (var connection = GetDb())
             {
-                db.Remove(id.ToString());
-                UpdateDb(db);
-            }
-        }
+                return connection.Query<WipItem>("SELECT Id FROM WipItems").ToList();
+            }  
+        } 
     }
 }

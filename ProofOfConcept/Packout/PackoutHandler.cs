@@ -36,7 +36,7 @@ namespace Packout
 
         public void Handle(WipMovedToPackout message)
         {
-            var wip = Repository.Get<WipItem>(message.WipId);
+            var wip = Repository.Get(message.WipId);
             wip.Station = "Packout";
             Repository.Save(message.WipId, wip);
         }

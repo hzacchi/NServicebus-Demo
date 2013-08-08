@@ -15,7 +15,7 @@ namespace Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View(Repository.GetAll<WipItem>().ToList());
+            return View(Repository.GetAll().ToList());
         }
 
         [HttpPost]
