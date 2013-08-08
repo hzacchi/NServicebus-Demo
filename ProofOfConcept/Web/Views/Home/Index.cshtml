@@ -14,6 +14,7 @@
     ul li.pending {background-color: orange}
     ul li.passed {background-color: green}
     ul li.failed {background-color: red}
+    ul li.assembling {border: dashed 1px blue}
 </style>
 
 <fieldset id="wip" class="section">
@@ -62,15 +63,20 @@
         li.removeClass("pending");
     };
 
+    router.client.assembleStarted = function (data) {
+        console.log('assembleStarted', data);
+        $("ul li#" + id).addClass("assembling");
+    };
+
     router.client.assemblePassed = function (data) {
         console.log('assemblePassed', data);
-        var li = $("ul li#" + id);
+        var li = $("ul li#" + data.WipId);
         li.addClass('passed');
     };
 
     router.client.assembleFailed = function (data) {
         console.log('assembleFailed', data);
-        var li = $("ul li#" + id);
+        var li = $("ul li#" + data.WipId);
         li.addClass('failed');
     };
 
@@ -78,8 +84,13 @@
         console.log('wipMovedToAssemble', data);
         moveTo("#assemble", data.WipId);
 
-        setTimeout('passOrFail("' + data.WipId + '")', 2000);
-    };
+        var $li = $("ul li#" + data.WipId);
+
+        //start assemble
+        $.post('/api/assemble/' + data.WipId, {}, function () {
+            $li.addClass("assembling");
+        });
+    }; 
 
     router.client.wipMovedToPackout = function (data) {
         console.log('wipMovedToPackout', data);
@@ -128,11 +139,5 @@
         var li = $("ul li#" + id);
         li.remove();
         $('ul', container).append(li);
-    }
-
-    function passOrFail(id) {  
-        $.post('/api/assemble/' + id, {}, function () {
-            
-        });
-    }
+    } 
 </script>

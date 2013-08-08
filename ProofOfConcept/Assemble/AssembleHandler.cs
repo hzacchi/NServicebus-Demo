@@ -11,11 +11,14 @@ using Contracts.Routing.Events;
 using Contracts.Wip;
 using Domain;
 using NServiceBus;
+using NServiceBus.Saga;
 using Persistence;
 
 namespace Assemble
-{
+{ 
+
     public class AssembleHandler :
+        IHandleMessages<StartAssemble>, 
         IHandleMessages<PassAssemble>,
         IHandleMessages<FailAssemble>,
         IHandleMessages<MoveWipToAssemble>,
@@ -38,15 +41,21 @@ namespace Assemble
         public void Handle(MoveWipToAssemble message)
         {
             Console.WriteLine(message.ToString());
-            Bus.Publish(new WipMovedToAssemble { WipId = message.WipId });
+            Bus.Publish(new WipMovedToAssemble {WipId = message.WipId});
         }
-        
+
         public void Handle(WipMovedToAssemble message)
         {
             Console.WriteLine(message.ToString());
             var wip = Repository.Get<WipItem>(message.WipId);
             wip.Station = "Assemble";
             Repository.Save(message.WipId, wip);
+        }
+
+        public void Handle(StartAssemble message)
+        {
+            Console.WriteLine(message.ToString());
+            Bus.Publish(new AssembleStarted { WipId = message.WipId });
         }
     }
 }

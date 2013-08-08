@@ -28,6 +28,16 @@ namespace Web.Handlers
             });
         }
 
+        public void Handle(AssembleStarted message)
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<RoutingHub>();
+
+            context.Clients.All.assembleStarted(new
+            {
+                message.WipId
+            });
+        }
+
         public void Handle(AssemblePassed message)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<RoutingHub>();

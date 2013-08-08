@@ -47,8 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assemble\Commands\StartAssemble.cs" />
     <Compile Include="Assemble\Events\AssembleFailed.cs" />
     <Compile Include="Assemble\Events\AssemblePassed.cs" />
+    <Compile Include="Assemble\Events\AssembleStarted.cs" />
     <Compile Include="Routing\Commands\MoveWipToAssemble.cs" />
     <Compile Include="Assemble\Commands\PassAssemble.cs" />
     <Compile Include="Assemble\Commands\FailAssemble.cs" />
