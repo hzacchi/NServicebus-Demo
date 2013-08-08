@@ -135,6 +135,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\AssembleController.cs" />
+    <Compile Include="Api\WipController.cs" />
     <Compile Include="Controllers\AssembleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PackoutController.cs" />

@@ -6,11 +6,14 @@
     .section {height:250px} 
     .clear {clear:both}
     
-    #packout { float: left;width: 48%}
-    #scrap { float: right;width: 48%}
+    #packout { float: left;width: 47.5%}
+    #scrap { float: right;width: 47.5%}
 
     ul {list-style-type: none}
-    ul li { float: left;width: 30%;height: 25px;background-color: green;margin: 0px 2px 2px 0px;color: white;text-align: center;padding: 2px 0px 0px 2px}
+    ul li { float: left;width: 30%;height: 25px;background-color: gray;margin: 0px 2px 2px 0px;color: white;text-align: center;padding: 2px 0px 0px 2px}
+    ul li.pending {background-color: orange}
+    ul li.passed {background-color: green}
+    ul li.failed {background-color: red}
 </style>
 
 <fieldset id="wip" class="section">
@@ -26,8 +29,7 @@
 <fieldset id="assemble" class="section">
     <legend>Assemble</legend>
     <ul></ul>
-    <div class="clear"></div>
-    <input type="button" id="move" value="Move"/>
+    <div class="clear"></div> 
 </fieldset>
 
 
@@ -54,24 +56,52 @@
     var router = $.connection.routingHub;
 
 
-    router.client.wipMovedToAssemble = function (data) {
-        alert('wip moved to assemble: ' + data.WipId);
+    router.client.wipReleased = function (data) {
+        console.log('wipReleased', data);
+        var li = $("ul li#" + data.WipId);
+        li.removeClass("pending");
     };
 
-    $(function () {
-        
+    router.client.assemblePassed = function (data) {
+        console.log('assemblePassed', data);
+        var li = $("ul li#" + id);
+        li.addClass('passed');
+    };
 
+    router.client.assembleFailed = function (data) {
+        console.log('assembleFailed', data);
+        var li = $("ul li#" + id);
+        li.addClass('failed');
+    };
 
+    router.client.wipMovedToAssemble = function (data) {
+        console.log('wipMovedToAssemble', data);
+        moveTo("#assemble", data.WipId);
 
+        setTimeout('passOrFail("' + data.WipId + '")', 2000);
+    };
 
-        releaseWipTimer();
+    router.client.wipMovedToPackout = function (data) {
+        console.log('wipMovedToPackout', data);
+        moveTo("#packout", data.WipId);
+    };
 
-        $("#move").click(function() {
-            moveTo("#assemble", 1);
+    router.client.wipMovedToScrap = function (data) {
+        console.log('wipMovedToScrap', data);
+        moveTo("#scrap", data.WipId);
+    };
+
+    $.connection.hub.start()
+        .done(function() { console.log('Now connected, connection ID=' + $.connection.hub.id); })
+        .fail(function () {
+            console.log('Could not Connect!');
         });
-    });
+  
 
-    var _id = 1;
+    $(function () { 
+        releaseWipTimer(); 
+    });
+     
     var wipReleaseTimer = 1;
     function releaseWipTimer() {
         $('#timer').html(wipReleaseTimer);
@@ -85,20 +115,24 @@
         
         setTimeout('releaseWipTimer()', 1000);
     }
-    
+
     function releaseWip() {
-        wipReleased();
+        $.post('/api/wip', {}, function(id) {
+            var li = $('<li class="pending">' + id + "</li>");
+            li.attr("id", id);
+            $('#wip ul').append(li);
+        });
     }
-    
-    function wipReleased() {
-        var li = $("<li>TEST" + _id + "</li>");
-        li.attr("id", _id++);
-        $('#wip ul').append(li);
-    }
-    
+
     function moveTo(container, id) {
         var li = $("ul li#" + id);
         li.remove();
         $('ul', container).append(li);
+    }
+
+    function passOrFail(id) {  
+        $.post('/api/assemble/' + id, {}, function () {
+            
+        });
     }
 </script>
